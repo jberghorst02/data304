@@ -5,13 +5,14 @@ editor: visual
 embed-resources: true
 ---
 
+# Your Turn: Wide-long and long-wide
+
 ```{python}
 import pandas as pd
 import altair as alt
 
 jobs_url = "https://cdn.jsdelivr.net/npm/vega-datasets@2.8.0/data/jobs.json"
 jobs = pd.read_json(jobs_url)
-print(jobs[0:4])
 ```
 
 ```{python}
@@ -30,6 +31,8 @@ alt.Chart(jobs).transform_pivot(
 
 ```
 
+Above is my plot showing percentage of men/women in different jobs in 1950 and 2000. One thing I would've liked to add here is logarithmic axes, but I was having issues when doing so.
+
 ```{python}
 from altair import datum
 
@@ -38,10 +41,10 @@ alt.Chart(jobs).mark_line().encode(
   y = "perc:Q",
   color = "job:N"
 ).facet(row = "sex:N"
-
 )
-
 ```
+
+The plot above shows the percentage of men and women working different jobs over time, using every job in the dataset. This is obviously cluttered...
 
 ```{python}
 alt.Chart(jobs).mark_line().encode(
@@ -55,6 +58,8 @@ alt.Chart(jobs).mark_line().encode(
 
 ```
 
+This plot shows only accountants/auditors and carpenters, which simplifies the graph significantly, although it does show less info.
+
 ```{python}
 alt.Chart(jobs).mark_line().encode(
   x = "year:O",
@@ -65,3 +70,85 @@ alt.Chart(jobs).mark_line().encode(
 )
 
 ```
+
+This graph shows only the allocation for accountant/auditors (my future career) over time, using color to differentiate sexes.
+
+# Your turn: Maps
+
+```{python}
+gapminder_url = "https://cdn.jsdelivr.net/npm/vega-datasets@1.29.0/data/gapminder.json"
+gapminder = pd.read_json(gapminder_url)
+print(gapminder[0:4])
+```
+
+```{python}
+import json 
+from urllib.request import urlopen
+
+world2_url = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'
+
+world2 = json.load(urlopen(world2_url))
+
+country_names = [ p['properties']['name'] 
+  for p in world2['objects']['countries']['geometries'] ]
+
+common_names = list(set(country_names) & set(gapminder['country']))
+missing_names = list(set(gapminder['country']) - set(country_names))
+extra_names = list(set(country_names) - set(gapminder['country']))
+
+# names in gapminder and in map data
+print("in common:", len(common_names), common_names)     
+# names in gapminder but not in map data
+print("missing in map:", len(missing_names), missing_names)    
+# names in the map data but not in gapminder
+print("extra in map", len(extra_names), extra_names)
+```
+
+```{python}
+world = alt.topo_feature(world2_url, feature = 'countries')
+world_map = alt.Chart(world).mark_geoshape(
+).properties(
+    width=800,
+    height=400
+).transform_lookup(
+  lookup="properties.name",
+  from_= alt.LookupData(gapminder, 'country', ['life_expect', 'year'])
+).transform_filter(datum.year == 2000
+).encode(
+    fill='life_expect:Q'
+)
+
+```
+
+I'm struggling to figure out what the issue is with this code. This is a work in progress.
+
+```{python}
+from vega_datasets import data
+airports = data.airports()
+
+states = alt.topo_feature(data.us_10m.url, feature = 'states')
+
+state_map = alt.Chart(states).mark_geoshape(
+    fill = 'transparent',
+    stroke = 'steelblue'
+).project('albersUsa'
+)
+
+state_map.transform_lookup(
+  lookup = 'state',
+  from_ = alt.LookupData(airports, 'state', ['name'])
+  ).encode(
+  fill = 'count()'
+)
+
+state_map.properties(width = 500, height = 300)
+
+```
+
+I think I'm having roughly the same issue with this graphic. I'm not sure what the issue is though at this point. 
+
+# Visualization galleries
+
+I saw a graphic on the Reddit page of NFL receiving yards leaders in 2023, but adjusted for Pass Interference calls. The story here is that if DPI yards were included in total yards, the leaderboard changes dramatically. It' a good graphic because it makes use of so many features. It has bars for each players actual receiving yards, another bar for DPI yards (which is a different color), text showing the actual number of actual, DPI, and adjusted total yards, and arrows showing the shift in ranking due to the adjustment. I know how to implement the stacked bars, text, x and y axes labels, and the colors. I don't know how to implement the arrows showing the change in ranking on the leaderboard. 
+
+
