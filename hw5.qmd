@@ -1,0 +1,67 @@
+---
+title: "Your Turn"
+format: html
+editor: visual
+embed-resources: true
+---
+
+```{python}
+import pandas as pd
+import altair as alt
+
+jobs_url = "https://cdn.jsdelivr.net/npm/vega-datasets@2.8.0/data/jobs.json"
+jobs = pd.read_json(jobs_url)
+print(jobs[0:4])
+```
+
+```{python}
+alt.data_transformers.enable('default', max_rows=None)
+
+alt.Chart(jobs).transform_pivot(
+    'year',
+    groupby=['job', 'sex'],
+    value='perc'
+).mark_point().encode(
+    x='1950:Q',
+    y='2000:Q',
+    color='sex:N',
+    tooltip=['sex', '1950:Q', '2000:Q', 'job']
+).properties(title="Percentage of men and women in various fields: 1950 vs 2000")
+
+```
+
+```{python}
+from altair import datum
+
+alt.Chart(jobs).mark_line().encode(
+  x = "year:O",
+  y = "perc:Q",
+  color = "job:N"
+).facet(row = "sex:N"
+
+)
+
+```
+
+```{python}
+alt.Chart(jobs).mark_line().encode(
+  x = "year:O",
+  y = "perc:Q",
+  color = "job:N"
+).facet(row = "sex:N"
+).transform_filter(
+  (datum.job == "Accountant / Auditor") | (datum.job == "Carpenter")
+)
+
+```
+
+```{python}
+alt.Chart(jobs).mark_line().encode(
+  x = "year:O",
+  y = "perc:Q",
+  color = "sex:N"
+).transform_filter(
+  (datum.job == "Accountant / Auditor")
+)
+
+```
