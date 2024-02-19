@@ -145,10 +145,8 @@ state_map.properties(width = 500, height = 300)
 
 ```
 
-I think I'm having roughly the same issue with this graphic. I'm not sure what the issue is though at this point. 
+I think I'm having roughly the same issue with this graphic. I'm not sure what the issue is though at this point.
 
 # Visualization galleries
 
-I saw a graphic on the Reddit page of NFL receiving yards leaders in 2023, but adjusted for Pass Interference calls. The story here is that if DPI yards were included in total yards, the leaderboard changes dramatically. It' a good graphic because it makes use of so many features. It has bars for each players actual receiving yards, another bar for DPI yards (which is a different color), text showing the actual number of actual, DPI, and adjusted total yards, and arrows showing the shift in ranking due to the adjustment. I know how to implement the stacked bars, text, x and y axes labels, and the colors. I don't know how to implement the arrows showing the change in ranking on the leaderboard. 
-
-
+I saw a graphic on the Reddit page of NFL receiving yards leaders in 2023, but adjusted for Pass Interference calls. The story here is that if DPI yards were included in total yards, the leaderboard changes dramatically. It' a good graphic because it makes use of so many features. It has bars for each players actual receiving yards, another bar for DPI yards (which is a different color), text showing the actual number of actual, DPI, and adjusted total yards, and arrows showing the shift in ranking due to the adjustment. I know how to implement the stacked bars, text, x and y axes labels, and the colors. I don't know how to implement the arrows showing the change in ranking on the leaderboard.
