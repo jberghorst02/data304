@@ -131,15 +131,16 @@ state_airports.head()
 
 ```{python}
 
-state_url = 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json'
-states = alt.topo_feature(state_url, feature='states')
+state_url = 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json'
+states = alt.topo_feature(state_url, feature = 'states')
 
 key = pd.read_csv("https://raw.githubusercontent.com/jasonong/List-of-US-States/master/states.csv")
-
 base_map = alt.Chart(states).mark_geoshape(
-    stroke='steelblue'
+    fill='transparent',
+    stroke = 'black'
 ).project(
-    type = 'albersUsa')
+    type='albersUsa'
+)
 
 state_map = base_map.transform_lookup(
     lookup='properties.name',
@@ -156,7 +157,6 @@ state_map.properties(width=500, height=300)
 
 ```
 
-This attempt to create the state map was unsuccessful. The lookups seem to be working based on the tooltips, but the projection is not right.
 
 # Visualization galleries
 
