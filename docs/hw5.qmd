@@ -113,14 +113,14 @@ world_map = alt.Chart(world).mark_geoshape(
 ).transform_lookup(
   lookup="properties.name",
   from_= alt.LookupData(gapminder, 'country', ['life_expect', 'year'])
-).transform_filter(datum.year == 2000
 ).encode(
     fill='life_expect:Q'
 )
 
+world_map
 ```
 
-I'm struggling to figure out what the issue is with this code. This is a work in progress.
+I've tried to aggregate and show just one year, but with no luck. I'm also not sure why there's no legend.
 
 ```{python}
 from vega_datasets import data
@@ -132,9 +132,7 @@ state_map = alt.Chart(states).mark_geoshape(
     fill = 'transparent',
     stroke = 'steelblue'
 ).project('albersUsa'
-)
-
-state_map.transform_lookup(
+).transform_lookup(
   lookup = 'state',
   from_ = alt.LookupData(airports, 'state', ['name'])
   ).encode(
@@ -145,7 +143,7 @@ state_map.properties(width = 500, height = 300)
 
 ```
 
-I think I'm having roughly the same issue with this graphic. I'm not sure what the issue is though at this point.
+For some reason the 'fill' and the projection is not working. Probably an issue with the lookup.
 
 # Visualization galleries
 
