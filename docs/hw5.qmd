@@ -108,8 +108,8 @@ print("extra in map", len(extra_names), extra_names)
 world = alt.topo_feature(world2_url, feature = 'countries')
 world_map = alt.Chart(world).mark_geoshape(
 ).properties(
-    width=800,
-    height=400
+    width=500,
+    height=300
 ).transform_lookup(
   lookup="properties.name",
   from_= alt.LookupData(gapminder, 'country', ['life_expect', 'year'])
@@ -120,30 +120,43 @@ world_map = alt.Chart(world).mark_geoshape(
 world_map
 ```
 
-Note: I'm not sure why there's no legend showing up.
-
 ```{python}
 from vega_datasets import data
 airports = data.airports()
 
-states = alt.topo_feature(data.us_10m.url, feature = 'states')
+state_airports = airports.groupby('state').size().reset_index(name='num_airports')
 
-state_map = alt.Chart(states).mark_geoshape(
-    fill = 'transparent',
-    stroke = 'steelblue'
-).project('albersUsa'
+state_airports.head()
+```
+
+```{python}
+
+state_url = 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json'
+states = alt.topo_feature(state_url, feature='states')
+
+key = pd.read_csv("https://raw.githubusercontent.com/jasonong/List-of-US-States/master/states.csv")
+
+base_map = alt.Chart(states).mark_geoshape(
+    stroke='steelblue'
+).project(
+    type = 'albersUsa')
+
+state_map = base_map.transform_lookup(
+    lookup='properties.name',
+    from_=alt.LookupData(key, 'State', ['Abbreviation'])
 ).transform_lookup(
-  lookup = 'state',
-  from_ = alt.LookupData(airports, 'state', ['name'])
-  ).encode(
-  fill = 'count()'
+    lookup='Abbreviation',
+    from_=alt.LookupData(state_airports, 'state', ['num_airports'])
+).encode(
+    fill='num_airports:Q',
+    tooltip=['properties.name:N', 'num_airports:Q']
 )
 
-state_map.properties(width = 500, height = 300)
+state_map.properties(width=500, height=300)
 
 ```
 
-For some reason the 'fill' and the projection is not working. It's probably an issue with the lookup, but I haven't been able to identify it.
+This attempt to create the state map was unsuccessful. The lookups seem to be working based on the tooltips, but the projection is not right.
 
 # Visualization galleries
 
