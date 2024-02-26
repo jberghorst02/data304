@@ -1,0 +1,225 @@
+---
+title: "Homework 7"
+format: html
+editor: visual
+embed-resources: true
+---
+
+```{python}
+import pandas as pd
+import altair as alt
+```
+
+# 1. Data and Graphics Challenge
+
+```{python}
+nps_breakdown = pd.read_excel('https://calvin-data304.netlify.app/data/swd-lets-practice-ex-7-06.xlsx', 'nps breakdown')
+nps_breakdown.loc[1, 'month'] = 'February 2019'
+nps_breakdown.head()
+```
+
+```{python}
+top_competitors = pd.read_excel('https://calvin-data304.netlify.app/data/swd-lets-practice-ex-7-06.xlsx', 'top competitors')
+top_competitors.head()
+```
+
+```{python}
+merged = pd.merge(nps_breakdown, top_competitors, on='month', how='left')
+merged.drop(columns=['Detractor', 'Passive', 'Promoter', 'Total', '# of ratings'], inplace=True)
+merged.rename(columns={'NPS': 'Our Company'}, inplace=True)
+merged.head()
+```
+
+```{python}
+melted = pd.melt(merged, id_vars = 'month', var_name = 'company', value_name = 'nps')
+melted.head()
+```
+
+```{python}
+alt.Chart(melted).mark_line().encode(
+    x = 'month:T',
+    y = 'nps:Q',
+    color = 'company:N'
+).properties(width = 500, height = 300)
+```
+
+```{python}
+from altair import datum
+
+alt.Chart(melted).mark_bar().encode(
+    x = 'company',
+    y = 'nps:Q',
+    color = 'company:N'
+).transform_filter(
+    (datum.month == 'February 2019')
+).properties(width = 500, height = 300)
+```
+
+```{python}
+nps_new = nps_breakdown.drop(columns = ['Total', 'NPS', '# of ratings'])
+nps_melted = pd.melt(nps_new, id_vars = 'month', var_name = 'component', value_name = 'proportion')
+nps_melted.head()
+```
+
+```{python}
+alt.Chart(nps_melted).mark_line().encode(
+    x = 'month:T',
+    y = 'proportion:Q',
+    color = 'component:N'
+).properties(width = 500, height = 300)
+```
+
+# 2. Number of Respondents by Country
+```{python}
+values = pd.read_csv('https://calvin-data304.netlify.app/data/wvs.csv')
+values.head()
+```
+```{python}
+alt.data_transformers.enable('default', max_rows=None)
+
+alt.Chart(values).transform_aggregate(
+    count='count()',
+    groupby=['country']
+).mark_bar().encode(
+    y= alt.Y('country:N', sort='-x'),
+    x='count:Q'
+).properties(
+    height=400,
+    width=700
+)
+
+```
+
+There were some notable differences between countries in the number of entries. Canada has the most by quite a margin, and they have over double of some countries like Sweden and South Korea.
+
+# 3. Checking the Age Groups
+
+```{python}
+alt.Chart(values).mark_point().encode(
+    x = 'age6:O',
+    y = 'age:Q',
+    color = 'age3:N'
+).properties(width = 200, height = 150
+).facet(column = 'country:N')
+
+```
+
+Looks like the age groups for 'age6' are around 18-25, 25-35, 35-45, 45-55, 55-65, and 65+. For 'age3' the age groups are 18-30, 30-50, and 50+. Those ranges stayed the same for each country. Note: I could not figure out how to facet_wrap so that the facets show up as a grid instead of side-by-side, which would be nice so that you don't have to scroll over to see every one.
+
+## Creating Figure 1.8
+```{python}
+# Aggregate the data
+agg_data = values.groupby(['country', 'age6'])['democracy_importance'].agg(
+    total_count='count',
+    essential_count=lambda x: (x == 10).sum()
+).reset_index()
+
+# Calculate the percentage
+agg_data['prop_essential'] = agg_data['essential_count'] / agg_data['total_count'] * 100
+
+# Pivoting
+new_df = agg_data.pivot(index='country', columns='age6', values='prop_essential').reset_index()
+
+# Melt dataframe for easier graphing
+new_df = new_df.melt(id_vars='country', var_name='age6', value_name='prop_essential')
+
+new_df.head()
+
+```
+
+```{python}
+band = alt.Chart(new_df).mark_errorband(extent = "ci").encode(
+  x = 'age6:O',
+  y = 'prop_essential:Q'
+).properties(width = 200, height = 150)
+
+line = alt.Chart(new_df).mark_line().encode(
+  x = 'age6:O',
+  y = 'prop_essential:Q'
+)
+
+combined_chart = (band + line).facet(column = 'country:N')
+combined_chart
+```
+
+I'm not sure why the error band isn't showing up here.
+
+# 4. Creating Figure 1.9
+
+```{python}
+line = alt.Chart(values).mark_line().encode(
+  x = 'age6:O',
+  y = 'mean(democracy_importance)'
+)
+
+band = alt.Chart(values).mark_errorband(extent='ci').encode(
+  x = 'age6:O',
+  y = alt.Y('democracy_importance', title = 'Mean Democracy Importance')
+)
+
+combined = (band + line).facet(column = 'country:N')
+combined
+```
+
+# 5. Mean Importance with Error Bands - Age
+
+```{python}
+line = alt.Chart(values).mark_line().encode(
+  x = 'age:Q',
+  y = 'mean(democracy_importance)'
+).properties(width = 200, height = 150)
+
+band = alt.Chart(values).mark_errorband(extent='ci').encode(
+  x = 'age:Q',
+  y = alt.Y('democracy_importance', title = 'Mean Democracy Importance')
+)
+
+combined = (band + line).facet(column = 'country:N')
+combined
+```
+
+The lines are more jagged when using age rather than age6. Using age6 smooths the curve because small variations in age are not shown. I think the plot using age6 is better because it's more simple. It's easier to see the important trends.
+
+# 6. Loess
+
+```{python}
+chart = alt.Chart(values).mark_point(opacity = 0.01).encode(
+  x = 'age:Q',
+  y = 'democracy_importance:Q'
+).properties(width = 200, height = 150)
+
+loess_chart = (
+    chart
+    + chart.transform_loess('age', 'democracy_importance').mark_line()
+).facet(column='country:N')
+loess_chart
+
+```
+This method definitely was the easiest to implement, especially after studying the documentation. However, I think the error bands give an extra element of detail, so I prefer those graphics.
+
+# 7. Regression
+
+## Linear
+
+```{python}
+reg_chart = alt.Chart(values).mark_point(opacity = 0.01).encode(
+  x = 'age:Q',
+  y = 'democracy_importance:Q'
+).properties(width = 200, height = 150)
+
+linreg_chart = (reg_chart + reg_chart.transform_regression('age', 'democracy_importance').mark_line()).facet(column = 'country:N')
+linreg_chart
+```
+
+## Polynomial
+
+```{python}
+poly_chart = alt.Chart(values).mark_point(opacity = 0.01).encode(
+  x = 'age:Q',
+  y = 'democracy_importance:Q'
+).properties(width = 200, height = 150)
+
+polynomial_chart = (poly_chart + poly_chart.transform_regression('age', 'democracy_importance', method = 'poly').mark_line()).facet(column = 'country:N')
+polynomial_chart
+```
+
