@@ -90,7 +90,7 @@ alt.Chart(values).transform_aggregate(
 
 ```
 
-There were some notable differences between countries in the number of entries. Canada has the most by quite a margin, and they have over double of some countries like Sweden and South Korea.
+There were some notable differences between countries in the number of entries. Canada has the most by quite a margin, and they have over double of some countries like Sweden and South Korea. The U.S. had the second most responses, right behind Canada. These differences mean that looking at 'count' differences between countries will not be particularly useful. Instead, proportions will better portray differences between countries.
 
 # 3. Checking the Age Groups
 
@@ -104,9 +104,10 @@ alt.Chart(values).mark_point().encode(
 
 ```
 
-Looks like the age groups for 'age6' are around 18-25, 25-35, 35-45, 45-55, 55-65, and 65+. For 'age3' the age groups are 18-30, 30-50, and 50+. Those ranges stayed the same for each country. Note: I could not figure out how to facet_wrap so that the facets show up as a grid instead of side-by-side, which would be nice so that you don't have to scroll over to see every one.
+In the graphic above, the x-axis is mapped to age6 and color is mapped to age3, which allows us to see the age ranges for both categories. It's also faceted by country. It looks like the age groups for 'age6' are around 18-25, 25-35, 35-45, 45-55, 55-65, and 65+. For 'age3' the age groups are 18-30, 30-50, and 50+. Those ranges stayed the same for each country. Note: I could not figure out how to facet_wrap so that the facets show up as a grid instead of side-by-side, which would be nice so that you don't have to scroll over to see every one.
 
 ## Creating Figure 1.8
+
 ```{python}
 # Aggregate the data
 agg_data = values.groupby(['country', 'age6'])['democracy_importance'].agg(
@@ -126,6 +127,7 @@ new_df = new_df.melt(id_vars='country', var_name='age6', value_name='prop_essent
 new_df.head()
 
 ```
+The code above aggregates the data by country and 'age6' and finds the number of respondents who said democracy was essential, a 10 out of 10. Then it divides that number by the total number of respondents in that aggregation. Then it pivots and melts to get the data in a good graphing format.
 
 ```{python}
 band = alt.Chart(new_df).mark_errorband(extent = "ci").encode(
@@ -142,7 +144,7 @@ combined_chart = (band + line).facet(column = 'country:N')
 combined_chart
 ```
 
-I'm not sure why the error band isn't showing up here.
+This is similar to figure 1.8, but note that the x-axis goes in reverse order because the book example x-axis variable is decade of birth rather than age. I'm not sure why the error band isn't showing up here. It worked fine for the next example.
 
 # 4. Creating Figure 1.9
 
@@ -178,7 +180,7 @@ combined = (band + line).facet(column = 'country:N')
 combined
 ```
 
-The lines are more jagged when using age rather than age6. Using age6 smooths the curve because small variations in age are not shown. I think the plot using age6 is better because it's more simple. It's easier to see the important trends.
+The lines are more jagged when using age rather than age6. Using age6 smooths the curve because small variations in age are not shown. I think the plot using age6 is better because it's more simple. It's easier to see the important trends. It's also easier to see the error bands. In the above plot, the error bands become difficult to spot because of the jagged lines.
 
 # 6. Loess
 
@@ -195,7 +197,8 @@ loess_chart = (
 loess_chart
 
 ```
-This method definitely was the easiest to implement, especially after studying the documentation. However, I think the error bands give an extra element of detail, so I prefer those graphics.
+
+This method definitely was the easiest to implement, especially after studying the documentation. However, I think the error bands give an extra element of detail, so I prefer those graphics. I chose to keep the points in the loess plots, but they don't really provide any additional information, other than showing that the lines came from something.
 
 # 7. Regression
 
@@ -223,3 +226,4 @@ polynomial_chart = (poly_chart + poly_chart.transform_regression('age', 'democra
 polynomial_chart
 ```
 
+It's interesting how similar all the Loess, polynomal, errorband, and linear plots are. They just show the information in a different way, with some showing more detail and some showing less.
