@@ -1,5 +1,5 @@
 ---
-title: "1. HW 3 Revision"
+title: "Problem 1: HW 3 Revision"
 author: "Jared Berghorst"
 format: html
 editor: visual
@@ -15,8 +15,8 @@ c. I noticed that a few people had genetic shares that went over 1. I think they
 ```{python}
 import pandas as pd
 
-twin_data_long = pd.read_csv('https://calvin-data304.netlify.app/data/twins-genetics-long.csv')
-twin_data_wide = pd.read_csv('https://calvin-data304.netlify.app/data/twins-genetics-wide.csv')
+twin_data_long = pd.read_csv('datasets/twins_long.csv')
+twin_data_wide = pd.read_csv('datasets/twins_wide.csv')
 ```
 
 # Comparing Kits

@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jared Berghorst">
 
-<title>Problem 2</title>
+<title>Problem 2: HW 7 Revision</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3029,7 +3029,7 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Problem 2</h1>
+<h1 class="title">Problem 2: HW 7 Revision</h1>
 </div>
 
 
@@ -3050,14 +3050,16 @@ vertical-align: -.125em;
 
 </header>
 
-<section id="making-a-graph-to-compare-countries" class="level1">
-<h1>Making a graph to compare countries</h1>
+<section id="challenge-4-price-at-the-pump" class="level1">
+<h1>Challenge 4: Price at the pump</h1>
+<section id="making-a-graph-to-compare-countries" class="level2">
+<h2 class="anchored" data-anchor-id="making-a-graph-to-compare-countries">Making a graph to compare countries</h2>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading the data</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>gas_prices <span class="op">=</span> pd.read_csv(<span class="st">&#39;https://calvin-data304.netlify.app/data/pump_price_for_gasoline_us_per_liter.csv&#39;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>gas_prices <span class="op">=</span> pd.read_csv(<span class="st">&#39;datasets/gas_prices.csv&#39;</span>)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Melting the data</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>gas_prices_melted <span class="op">=</span> pd.melt(gas_prices, id_vars <span class="op">=</span> [<span class="st">&#39;country&#39;</span>], var_name <span class="op">=</span> <span class="st">&#39;year&#39;</span>, value_name <span class="op">=</span> <span class="st">&#39;gas_price&#39;</span>)</span>
@@ -3082,25 +3084,25 @@ vertical-align: -.125em;
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>).configure_axisX(</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    labelAngle<span class="op">=</span><span class="dv">45</span> </span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="38">
+<div class="cell-output cell-output-display" data-execution_count="2">
 
 <style>
-#altair-viz-6d55aa512b29495396f598a04e366619.vega-embed {
+#altair-viz-7380ba604ac7411aac014e95966df807.vega-embed {
 width: 100%;
 display: flex;
 }
-#altair-viz-6d55aa512b29495396f598a04e366619.vega-embed details,
-#altair-viz-6d55aa512b29495396f598a04e366619.vega-embed details summary {
+#altair-viz-7380ba604ac7411aac014e95966df807.vega-embed details,
+#altair-viz-7380ba604ac7411aac014e95966df807.vega-embed details summary {
 position: relative;
 }
 </style>
-<div id="altair-viz-6d55aa512b29495396f598a04e366619"></div>
+<div id="altair-viz-7380ba604ac7411aac014e95966df807"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-6d55aa512b29495396f598a04e366619") {
-      outputDiv = document.getElementById("altair-viz-6d55aa512b29495396f598a04e366619");
+    if (outputDiv.id !== "altair-viz-7380ba604ac7411aac014e95966df807") {
+      outputDiv = document.getElementById("altair-viz-7380ba604ac7411aac014e95966df807");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
@@ -3152,10 +3154,10 @@ position: relative;
 </div>
 <p>The above graphic shows gas prices from 1991 to 2016 in seven selected countries. You can see that prices rose in all countries until 2012, when they began to drop. Saudi Arabia pays the least for gas, likely due to its massive oil reserves. U.K. pays the most, likely because they import nearly all of their gas and it must travel by air or sea. I chose to make a simple line graph. Most of the heavy lifting for this graphic was done in the wrangling. I melted the data to create a new column called ‘year.’ I also interpolated the data for each country, which essentially smoothed the gas prices between years with missing data. For the graphic, I decided to rotate the tick labels by 45 degrees to make them easier to read.</p>
 </section>
-<section id="making-a-graph-to-compare-regions" class="level1">
-<h1>Making a graph to compare regions</h1>
+<section id="making-a-graph-to-compare-regions" class="level2">
+<h2 class="anchored" data-anchor-id="making-a-graph-to-compare-regions">Making a graph to compare regions</h2>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>country_info <span class="op">=</span> pd.read_csv(<span class="st">&#39;https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.csv&#39;</span>)</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>country_info <span class="op">=</span> pd.read_csv(<span class="st">&#39;datasets/country_info.csv&#39;</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>country_info.rename(columns<span class="op">=</span>{<span class="st">&#39;name&#39;</span>: <span class="st">&#39;country&#39;</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -3173,25 +3175,25 @@ position: relative;
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>).properties(title <span class="op">=</span> <span class="st">&#39;Europe pays the most for gas, Asia pays the least. All regions have seen declining prices since 2012.&#39;</span>).configure_axisX(</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    labelAngle<span class="op">=</span><span class="dv">45</span> </span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="40">
+<div class="cell-output cell-output-display" data-execution_count="4">
 
 <style>
-#altair-viz-0ca0d01b241f4d1fb0a93b39a8840a94.vega-embed {
+#altair-viz-e07dfdaeb4d547c2b46669083e61660a.vega-embed {
 width: 100%;
 display: flex;
 }
-#altair-viz-0ca0d01b241f4d1fb0a93b39a8840a94.vega-embed details,
-#altair-viz-0ca0d01b241f4d1fb0a93b39a8840a94.vega-embed details summary {
+#altair-viz-e07dfdaeb4d547c2b46669083e61660a.vega-embed details,
+#altair-viz-e07dfdaeb4d547c2b46669083e61660a.vega-embed details summary {
 position: relative;
 }
 </style>
-<div id="altair-viz-0ca0d01b241f4d1fb0a93b39a8840a94"></div>
+<div id="altair-viz-e07dfdaeb4d547c2b46669083e61660a"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-0ca0d01b241f4d1fb0a93b39a8840a94") {
-      outputDiv = document.getElementById("altair-viz-0ca0d01b241f4d1fb0a93b39a8840a94");
+    if (outputDiv.id !== "altair-viz-e07dfdaeb4d547c2b46669083e61660a") {
+      outputDiv = document.getElementById("altair-viz-e07dfdaeb4d547c2b46669083e61660a");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
@@ -3242,6 +3244,7 @@ position: relative;
 </div>
 </div>
 <p>This graphic shows the average gas price in each world region over time. The prices overall follow a very similar trend to the previous graphic. Europe pays the most per gallon, while Asia pays the least, likely due to the close access of Middle Eastern oil reserves to the rest of Asia. I joined the two datasets in order to get the regional data, then I aggregated by region and took the mean gas price.</p>
+</section>
 </section>
 
 </main>

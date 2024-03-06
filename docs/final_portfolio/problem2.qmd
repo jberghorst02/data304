@@ -1,19 +1,20 @@
 ---
-title: "Problem 2"
+title: "Problem 2: HW 7 Revision"
 format: html
 editor: visual
 embed-resources: true
 author: "Jared Berghorst"
 ---
 
-# Making a graph to compare countries
+# Challenge 4: Price at the pump
+## Making a graph to compare countries
 
 ```{python}
 import pandas as pd
 import altair as alt
 
 # Loading the data
-gas_prices = pd.read_csv('https://calvin-data304.netlify.app/data/pump_price_for_gasoline_us_per_liter.csv')
+gas_prices = pd.read_csv('datasets/gas_prices.csv')
 
 # Melting the data
 gas_prices_melted = pd.melt(gas_prices, id_vars = ['country'], var_name = 'year', value_name = 'gas_price')
@@ -45,10 +46,10 @@ alt.Chart(gas_prices_melted).mark_line().transform_filter(
 
 The above graphic shows gas prices from 1991 to 2016 in seven selected countries. You can see that prices rose in all countries until 2012, when they began to drop. Saudi Arabia pays the least for gas, likely due to its massive oil reserves. U.K. pays the most, likely because they import nearly all of their gas and it must travel by air or sea. I chose to make a simple line graph. Most of the heavy lifting for this graphic was done in the wrangling. I melted the data to create a new column called 'year.' I also interpolated the data for each country, which essentially smoothed the gas prices between years with missing data. For the graphic, I decided to rotate the tick labels by 45 degrees to make them easier to read.
 
-# Making a graph to compare regions
+## Making a graph to compare regions
 
 ```{python}
-country_info = pd.read_csv('https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.csv')
+country_info = pd.read_csv('datasets/country_info.csv')
 
 country_info.rename(columns={'name': 'country'}, inplace=True)
 
