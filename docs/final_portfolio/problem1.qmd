@@ -1,0 +1,69 @@
+---
+title: "1. HW 3 Revision"
+author: "Jared Berghorst"
+format: html
+editor: visual
+embed-resources: true
+---
+
+a. Looking at the HW 3 gallery, I really like how Lien used an interactive slider so that the view can choose which twin pair to look at. I tried to do something similar in my original attempt using a drop-down menu, but I wasn't able to figure it out. I ended up making a faceted graphic, but I didn't like how busy it was. Sliding through the twin pairs makes for a better experience, especially considering that comparing between twin pairs probably isn't a priority for users. 
+
+b. As we did in our original assignment, I will assume that the difference in time frame between surveys doesn't affect the results, and therefore will not be included as a variable in any of the graphics.
+
+c. I noticed that a few people had genetic shares that went over 1. I think they were misinterpreting the data and not realizing that the genetic shares added up to 1 for each twin no matter how the data was structured. The people who did this did not include the region as a variable at all, which doesn't really make sense because that's what differentiates the rows that define the same person. I'll want to make sure to include region in my final graphics.
+
+```{python}
+import pandas as pd
+
+twin_data_long = pd.read_csv('https://calvin-data304.netlify.app/data/twins-genetics-long.csv')
+twin_data_wide = pd.read_csv('https://calvin-data304.netlify.app/data/twins-genetics-wide.csv')
+```
+
+# Comparing Kits
+
+```{python}
+import altair as alt
+
+kit_chart = alt.Chart(twin_data_long, title = 'DNA kits find very similar results among participants, with Ancestry occasionally differing slightly from 23+Me and My Heritage' ).mark_bar().encode(
+  x = 'kit:N',
+  y = 'genetic share:Q',
+  color = 'region:N'
+)
+
+twins = ['1A', '1B', '2A', '2B', '3A', '3B', '4A', '4B', '5A', '5B', '6A', '6B']
+
+twin_dropdown = alt.binding_select(options=twins, name="Twin")
+twin_select = alt.selection_point(fields=['twin'], bind=twin_dropdown)
+
+filter_twins = kit_chart.add_params(
+    twin_select
+).transform_filter(
+    twin_select
+)
+
+filter_twins.properties(width = 600, height = 400)
+```
+
+### Please note that in order for Twin 1A to be shown correctly, a new twin must be selected from the drop-down menu, then you must switch back to Twin 1A (possibly a bug with Vega-lite).
+
+This graphic compares the 3 types of DNA kits used in the dataset: Ancestry, 23 and Me, and My Heritage. From the graphic, you can see that the three kits are always somewhat in agreement... there are no major variances between kits for the same person. When in looking closely, however, it does seem that 23 and Me and My Heritage are typically almost exactly the same. Ancestry often differs slightly and typically gives more genetic share to Central Africa when present, for whatever reason. This graphic successfully implements the drop down menu interaction that I attempted to use in my original attempt. I was able to figure it out by examining the Altair documenation.
+
+# Comparing Twins
+
+```{python}
+alt.Chart(twin_data_wide).mark_bar().encode(
+  x = alt.X('Ancestry:Q', title = 'Ancestry Genetic Share'),
+  y = 'twin:O',
+  color = alt.Color('region:N').scale(scheme = 'category10'),
+  tooltip = [
+      alt.Tooltip('Ancestry:Q', title='Ancestry Genetic Share'),
+      alt.Tooltip('region:N', title='Region')
+  ]
+).properties(width = 600, height = 500, title = 'Ancestry finds nearly identical genetic shares between identical twins')
+```
+
+The graphic above focuses on Ancestry's results and makes it easier to compare twins. You can see that Ancestry finds almost the same genetic distribution between identical twins. For all 6 pairs, there are only minor deviations accounting for less than 5% of the overall genetic makeup. This is good evidence that Ancestry provides consistent results, since the genetic share and the DNA of identical twins should be exactly the same. I chose to plot all of the twin pairs on the same axes this time, rather than faceting. I think the faceting made the distinction between 'twin' and 'pair' a bit confusing. It doesn't take long to look at this graphic and see the point it's trying to make. I also chose to add a custom color scheme. The default scheme resulted in red and orange bars being used for the same people, which isn't a very clear contrast and could be hard to differentiate for some viewers. I also added a tooltip for more detail and clarity.
+
+
+
+
