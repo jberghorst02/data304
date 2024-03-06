@@ -59,7 +59,7 @@ alt.Chart(twin_data_wide).mark_bar().encode(
       alt.Tooltip('Ancestry:Q', title='Ancestry Genetic Share'),
       alt.Tooltip('region:N', title='Region')
   ]
-).properties(width = 600, height = 500, title = 'Ancestry finds nearly identical genetic shares between identical twins')
+).properties(width = 500, height = 400, title = 'Ancestry finds nearly identical genetic shares between identical twins')
 ```
 
 The graphic above focuses on Ancestry's results and makes it easier to compare twins. You can see that Ancestry finds almost the same genetic distribution between identical twins. For all 6 pairs, there are only minor deviations accounting for less than 5% of the overall genetic makeup. This is good evidence that Ancestry provides consistent results, since the genetic share and the DNA of identical twins should be exactly the same. I chose to plot all of the twin pairs on the same axes this time, rather than faceting. I think the faceting made the distinction between 'twin' and 'pair' a bit confusing. It doesn't take long to look at this graphic and see the point it's trying to make. I also chose to add a custom color scheme. The default scheme resulted in red and orange bars being used for the same people, which isn't a very clear contrast and could be hard to differentiate for some viewers. I also added a tooltip for more detail and clarity.
