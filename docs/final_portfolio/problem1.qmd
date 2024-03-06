@@ -46,7 +46,7 @@ filter_twins.properties(width = 600, height = 400)
 
 ### Please note that in order for Twin 1A to be shown correctly, a new twin must be selected from the drop-down menu, then you must switch back to Twin 1A (possibly a bug with Vega-lite).
 
-This graphic compares the 3 types of DNA kits used in the dataset: Ancestry, 23 and Me, and My Heritage. From the graphic, you can see that the three kits are always somewhat in agreement... there are no major variances between kits for the same person. When in looking closely, however, it does seem that 23 and Me and My Heritage are typically almost exactly the same. Ancestry often differs slightly and typically gives more genetic share to Central Africa when present, for whatever reason. This graphic successfully implements the drop down menu interaction that I attempted to use in my original attempt. I was able to figure it out by examining the Altair documenation.
+This graphic compares the 3 types of DNA kits used in the dataset: Ancestry, 23 and Me, and My Heritage. From the graphic, you can see that the three kits are always somewhat in agreement... there are no major variances between kits for the same person. When looking closely, however, it does seem that 23 and Me and My Heritage are typically almost exactly the same. Ancestry often differs slightly and typically gives more genetic share to Central Africa when present, for whatever reason. This graphic successfully implements the drop down menu interaction that I attempted to use in my original attempt. I was able to figure it out by examining the Altair documenation.
 
 # Comparing Twins
 
