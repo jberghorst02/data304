@@ -1,0 +1,44 @@
+---
+title: "Problem 3: Tanzania"
+format: html
+editor: visual
+embed-resources: true
+author: "Jared Berghorst"
+---
+
+```{python}
+import pandas as pd
+import altair as alt
+
+tanzania_survey = pd.read_excel("datasets/tanzania_survey.xlsx")
+tanzania_survey['survey_year'] = pd.to_datetime(tanzania_survey['survey_year'], format='%Y')
+
+tanzania_survey
+```
+
+I chose to simplify the column names to make the text more Python/Altair friendly. I also decided to just use the first year for the survey years that were ranges of two years. This will allow me to treat all of the years as the same variable type.
+
+```{python}
+fertility = alt.Chart(tanzania_survey).mark_line().encode(
+  x = alt.X('survey_year:T', title = 'Year'),
+  y = alt.Y('fertility_rate:Q', title = 'Fertility Rate'),
+  color = alt.value('orange')
+).properties(width = 700, height = 100)
+
+contraception = alt.Chart(tanzania_survey).mark_line().encode(
+  x = alt.X('survey_year:T', title = 'Year'),
+  y = alt.Y('contraception_use_rate:Q', title = 'Contraception Use Rate'),
+  color = alt.value('blue')
+).properties(width = 700, height = 100)
+
+planning = alt.Chart(tanzania_survey).mark_line().encode(
+  x = alt.X('survey_year:T', title = 'Year'),
+  y = alt.Y('unmet_family_planning:Q', title = 'Unmet Family Planning Need Rate'),
+  color = alt.value('green')
+).properties(width = 700, height = 100)
+
+(fertility & contraception & planning).properties(title = "Fertility rates and unmet family planning needs decrease as use of contraception increases in Tanzania")
+```
+
+As contraception use has increased in Tanzania since 1990, fertility rates have fallen, as have the percentage of women with unmet family planning needs. This makes sense because increased contraception should decrease the number of children that the average Tanzanian women has in their lifetim, and it should make it easier to have access to better family planning.
+
