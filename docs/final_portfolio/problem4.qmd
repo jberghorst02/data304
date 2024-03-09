@@ -1,0 +1,105 @@
+---
+title: "Problem 4: Masterpiece"
+format: html
+editor: visual
+embed-resources: true
+author: "Jared Berghorst"
+---
+
+## Data
+
+```{python}
+import pandas as pd
+import altair as alt
+
+mlb_data = pd.read_excel('datasets/mlb_data.xlsx')
+mlb_data['Year'] = pd.to_datetime(mlb_data['Year'], format='%Y')
+
+mlb_data = pd.melt(mlb_data, id_vars = ['Year'], var_name = 'stat_type')
+mlb_data.head()
+
+```
+## The Graphic
+
+```{python}
+stat_types = ['Home runs per game', 'Runs per game', 'Batting average', 'SLG', 'OPS']
+
+base = alt.Chart(mlb_data).mark_line().encode(
+    x='Year:T',
+    y=alt.Y('value:Q', scale=alt.Scale(zero=False))
+)
+
+steroid_era = alt.Chart(mlb_data).mark_rect().encode(
+    x='x_start:T',
+    x2='x_end:T',
+    opacity=alt.value(0.005)
+).transform_calculate(
+    x_start='datetime(1990, 1, 1)',
+    x_end='datetime(2000, 1, 1)'
+)
+
+stat_dropdown = alt.binding_select(options=stat_types, name="Stat Type")
+stat_select = alt.selection_point(fields=['stat_type'], bind=stat_dropdown, value=('Home runs per game'))
+
+filter_stats = base.add_params(
+    stat_select
+).transform_filter(
+    stat_select
+).properties(title="Choose Stat")
+
+chart = (steroid_era + filter_stats).properties(
+    width=700,
+    height=400,
+    title = 'Offensive productivity in the MLB increased significantly during the Steroid Era'
+).encode(
+  alt.X().title('Year'),
+  alt.Y().title('Leaguewide Value')
+)
+
+chart
+```
+
+## Explanation
+
+One of the key decisions I made when designing this graphic was using the drop down menu interaction.  An alternative would have been to facet or concatenate the graph, but I chose to make a drop down menu so that the increases in the selected offensive metrics show up bigger on the viewer's screen. Along those lines, I also made a decision to have a y-axis scale that doesn't start at 0. This goes against the philosophy of some graphic experts, but I think it was necessary in order to see the important trends. For example, with axes that start at 0, it's not nearly as easy to see the effect of the steroid era on Batting Average, OPS, and the other metrics. I've added an example graphic below that illustrates this. To me, this decision is also justified because 0 is not relevant for many of the metrics chosen. Showing an OPS or Batting Average of 0 is not a necessary reference point because 0 is not in the relevant range. Another decision I had to make was how to show the time frame of the Steroid Era. I thought about making a separate line graph that showed the use of steroids over time, but this would require the viewer to constantly look back and forth. Instead, I followed the advice of Tufte and tried to maximize my data-ink ratio. I layered a colored, low-opacity rectangle onto the graphic over the years which are commonly referenced as the Steroid Era. This was more efficient than creating a completely separate graphic, and it also allows the viewer to understand the purpose quicker.
+
+## With y-axes that start at 0...
+
+```{python}
+stat_types = ['Home runs per game', 'Runs per game', 'Batting average', 'SLG', 'OPS']
+
+base = alt.Chart(mlb_data).mark_line().encode(
+    x='Year:T',
+    y='value:Q'
+)
+
+steroid_era = alt.Chart(mlb_data).mark_rect().encode(
+    x='x_start:T',
+    x2='x_end:T',
+    opacity=alt.value(0.005)
+).transform_calculate(
+    x_start='datetime(1990, 1, 1)',
+    x_end='datetime(2000, 1, 1)'
+)
+
+stat_dropdown = alt.binding_select(options=stat_types, name="Stat Type")
+stat_select = alt.selection_point(fields=['stat_type'], bind=stat_dropdown, value=('Home runs per game'))
+
+filter_stats = base.add_params(
+    stat_select
+).transform_filter(
+    stat_select
+).properties(title="Choose Stat")
+
+chart = (steroid_era + filter_stats).properties(
+    width=700,
+    height=400,
+    title = 'Offensive productivity in the MLB increased significantly during the Steroid Era'
+).encode(
+  alt.X().title('Year'),
+  alt.Y().title('Leaguewide Value')
+)
+
+chart
+```
+

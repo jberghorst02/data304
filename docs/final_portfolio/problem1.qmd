@@ -6,11 +6,11 @@ editor: visual
 embed-resources: true
 ---
 
-a. Looking at the HW 3 gallery, I really like how Lien used an interactive slider so that the view can choose which twin pair to look at. I tried to do something similar in my original attempt using a drop-down menu, but I wasn't able to figure it out. I ended up making a faceted graphic, but I didn't like how busy it was. Sliding through the twin pairs makes for a better experience, especially considering that comparing between twin pairs probably isn't a priority for users. 
+a.  Looking at the HW 3 gallery, I really like how Lien used an interactive slider so that the view can choose which twin pair to look at. I tried to do something similar in my original attempt using a drop-down menu, but I wasn't able to figure it out. I ended up making a faceted graphic, but I didn't like how busy it was. Sliding through the twin pairs makes for a better experience, especially considering that comparing between twin pairs probably isn't a priority for users.
 
-b. As we did in our original assignment, I will assume that the difference in time frame between surveys doesn't affect the results, and therefore will not be included as a variable in any of the graphics.
+b.  As we did in our original assignment, I will assume that the difference in time frame between surveys doesn't affect the results, and therefore will not be included as a variable in any of the graphics.
 
-c. I noticed that a few people had genetic shares that went over 1. I think they were misinterpreting the data and not realizing that the genetic shares added up to 1 for each twin no matter how the data was structured. The people who did this did not include the region as a variable at all, which doesn't really make sense because that's what differentiates the rows that define the same person. I'll want to make sure to include region in my final graphics.
+c.  I noticed that a few people had genetic shares that went over 1. I think they were misinterpreting the data and not realizing that the genetic shares added up to 1 for each twin no matter how the data was structured. The people who did this did not include the region as a variable at all, which doesn't really make sense because that's what differentiates the rows that define the same person. I'll want to make sure to include region in my final graphics.
 
 ```{python}
 import pandas as pd
@@ -33,7 +33,7 @@ kit_chart = alt.Chart(twin_data_long, title = 'DNA kits find very similar result
 twins = ['1A', '1B', '2A', '2B', '3A', '3B', '4A', '4B', '5A', '5B', '6A', '6B']
 
 twin_dropdown = alt.binding_select(options=twins, name="Twin")
-twin_select = alt.selection_point(fields=['twin'], bind=twin_dropdown)
+twin_select = alt.selection_point(fields=['twin'], bind=twin_dropdown, value=('1A'))
 
 filter_twins = kit_chart.add_params(
     twin_select
@@ -41,7 +41,9 @@ filter_twins = kit_chart.add_params(
     twin_select
 )
 
-filter_twins.properties(width = 600, height = 400)
+filter_twins.properties(width = 600, height = 400).configure_axis(
+    labelAngle=360
+)
 ```
 
 ### Please note that in order for Twin 1A to be shown correctly, a new twin must be selected from the drop-down menu, then you must switch back to Twin 1A (possibly a bug with Vega-lite).
@@ -63,7 +65,3 @@ alt.Chart(twin_data_wide).mark_bar().encode(
 ```
 
 The graphic above focuses on Ancestry's results and makes it easier to compare twins. You can see that Ancestry finds almost the same genetic distribution between identical twins. For all 6 pairs, there are only minor deviations accounting for less than 5% of the overall genetic makeup. This is good evidence that Ancestry provides consistent results, since the genetic share and the DNA of identical twins should be exactly the same. I chose to plot all of the twin pairs on the same axes this time, rather than faceting. I think the faceting made the distinction between 'twin' and 'pair' a bit confusing. It doesn't take long to look at this graphic and see the point it's trying to make. I also chose to add a custom color scheme. The default scheme resulted in red and orange bars being used for the same people, which isn't a very clear contrast and could be hard to differentiate for some viewers. I also added a tooltip for more detail and clarity.
-
-
-
-
