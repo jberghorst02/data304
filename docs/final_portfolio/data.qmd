@@ -1,0 +1,21 @@
+---
+title: "Data Directory"
+format: html
+editor: visual
+author: "Jared Berghorst"
+embed-resources: true
+---
+
+Here are the links to the data I used for this project:
+
+Gas prices: https://calvin-data304.netlify.app/data/pump_price_for_gasoline_us_per_liter.csv
+
+Country info: https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.csv
+
+Twins wide data: https://calvin-data304.netlify.app/data/twins-genetics-wide.csv
+
+Twins long data: https://calvin-data304.netlify.app/data/twins-genetics-long.csv
+
+Tanzania survey: https://github.com/jberghorst02/data304/blob/main/docs/final_portfolio/datasets/tanzania_survey.xlsx
+
+MLB data: https://github.com/jberghorst02/data304/blob/main/docs/final_portfolio/datasets/mlb_data.xlsx
