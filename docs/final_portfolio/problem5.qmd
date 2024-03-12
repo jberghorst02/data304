@@ -1,0 +1,32 @@
+---
+title: "Problem 5: Using Your Palette"
+format: html
+editor: visual
+embed-resources: true
+author: 'Jared Berghorst'
+---
+
+# A. Encoding channel other than x or y
+
+In Problem 1, I used color as a channel in both of my graphics. In both cases, it was mapped to region. I also used tooltips in my second graphic in the same problem. The tooltips were mapped to both region and genetic share.
+
+# B. Facets
+
+I used facets in Problem 4 as an example of a 'masterpiece' version that I didn't like. I faceted by stat_type instead of using the drop down menu. I also figured out how to facet_wrap to show all of the facets at once without having to scroll.
+
+# C. Layers
+
+In Problem 4 (the masterpiece) I layered a rectangular graphic with my line chart to highlight the steroid era timeframe. I colored it light blue and lowered the opacity so that you can see the lines underneath it.
+
+# D. Concatenation
+
+I used a VConcat in Problem 3 to show the fertility rate, contraception use rate, and unmet family planning need rate at the same time. I chose to make it vertical because the x-axis (year) was the same for each graphic.
+
+# E. Non default configuration of a channel's scale or guide
+
+In Problem 2, I chose to rotate the tick labels on the x-axis 45 degrees so that they were easy to read and didn't overlap.
+
+# F. Interaction
+
+I used several interactions, including drop-down menus in Problems 1 and 4. I liked the drop-down menus because it gives the viewer a customizable view, while also highlighting important trends.
+

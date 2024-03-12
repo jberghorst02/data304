@@ -1,0 +1,25 @@
+---
+title: "Problem 6: Keep learning"
+format: html
+editor: visual
+embed-resources: true
+author: "Jared Berghorst"
+---
+
+# Features of Altair used that were not taught in class
+
+1. I used a drop down menu interaction for my 'masterpiece' graphic. In class, we talked briefly about some other interactions, but didn't cover drop down menus specifically. I also had to problem-solve an issue where the graphic wouldn't initially aggregate the shown data in the selected menu option, it would show all of the data at once until another option was clicked. I found some discussion threads online about how to solve this, and realized I had to add a 'value' argument to the selection point function in order to have the aggregation show up right when the graph was rendered.
+
+2. I rotated my tick labels and axis labels in several of my graphs in order to make them easier to read. A specific example is in my first graphic in Problem 2, where I rotated the labels 45 degrees so that the years wouldn't overlap and they were not vertical. This wasn't explicitly covered in class, and I used the Altair documentation to figure it out.
+
+3. I used a special kind of transform_calculate that worked for 'datetime' objects in my Problem 5 graphic. It looked somethig like this: 
+    x_start='datetime(1990, 1, 1)',
+    x_end='datetime(2000, 1, 1)'
+This allowed me to create a rectangle that represented the steroid era in the MLB between two years. I used the Altair documentation again to figure this out.
+
+# Principles of good graphics
+
+1. On pages 71-72 if C.N. Knaflic's "Storytelling with Data," he talks about the downsides of too much clutter in a graphic. The section itself is titled, "Clutter is your enemy." Knaflic discusses the problem of cognitive load in visualizations. Some graphics take too much time and effort to understand. This is often due to a low data-ink ratio, a term popularized by Tufte. Knaflic elaborates on this idea by encouraging visualization creators to minimize clutter. I used this advice in my 'masterpiece' graphic in Problem 4. As I explained in that problem, I considered using faceting to show each of the baseball metrics at once. However, one of the reasons I decided against it was the abundance of clutter. There was too much data on the page at once. By using drop down menus, I increased the data-ink ratio and allowed the viewer to focus on one metric at a time. 
+
+2. In Wilke's "Fundamentals of Data Visualization," he gives advice for the use of background grids in section 23.2 (https://clauswilke.com/dataviz/balance-data-context.html#background-grids). He says that sometimes it isn't necessary to have gridlines in both directions on a graphic. He thinks that they can certainly be useful and informative, but sometimes they can add visual noise, particularly if they are prominent and/or densely packed. In Problem 2, I made a line graph showing the change in gas prices over time. I decided to omit the vertical gridlines, which were the lines that were a guide for the x-axis variable, time. I felt that having both sets of gridlines was too noisy, especially considering that I already had many colored lines in the graphic. Wilke mentioned that if one direction of gridlines are to be used, they should be perpendicular to the variable of interest. Therefore, I kept the horizontal gridlines because they ruhn perpendicularly to the gas prices, which is the variable of interest.
+

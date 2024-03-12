@@ -61,7 +61,13 @@ chart
 
 ## Explanation
 
-One of the key decisions I made when designing this graphic was using the drop down menu interaction.  An alternative would have been to facet or concatenate the graph, but I chose to make a drop down menu so that the increases in the selected offensive metrics show up bigger on the viewer's screen. Along those lines, I also made a decision to have a y-axis scale that doesn't start at 0. This goes against the philosophy of some graphic experts, but I think it was necessary in order to see the important trends. For example, with axes that start at 0, it's not nearly as easy to see the effect of the steroid era on Batting Average, OPS, and the other metrics. I've added an example graphic below that illustrates this. To me, this decision is also justified because 0 is not relevant for many of the metrics chosen. Showing an OPS or Batting Average of 0 is not a necessary reference point because 0 is not in the relevant range. Another decision I had to make was how to show the time frame of the Steroid Era. I thought about making a separate line graph that showed the use of steroids over time, but this would require the viewer to constantly look back and forth. Instead, I followed the advice of Tufte and tried to maximize my data-ink ratio. I layered a colored, low-opacity rectangle onto the graphic over the years which are commonly referenced as the Steroid Era. This was more efficient than creating a completely separate graphic, and it also allows the viewer to understand the purpose quicker.
+One of the key decisions I made when designing this graphic was using the drop down menu interaction.  An alternative would have been to facet or concatenate the graph, but I chose to make a drop down menu so that the increases in the selected offensive metrics show up bigger on the viewer's screen. 
+
+Along those lines, I also made a decision to have a y-axis scale that doesn't start at 0. This goes against the philosophy of some graphic experts, but I think it was necessary in order to see the important trends. For example, with axes that start at 0, it's not nearly as easy to see the effect of the steroid era on Batting Average, OPS, and the other metrics. I've added an example graphic below that illustrates this. To me, this decision is also justified because 0 is not relevant for many of the metrics chosen. Showing an OPS or Batting Average of 0 is not a necessary reference point because 0 is not in the relevant range. 
+
+Another decision I had to make was how to show the time frame of the Steroid Era. I thought about making a separate line graph that showed the use of steroids over time, but this would require the viewer to constantly look back and forth. Instead, I followed the advice of Tufte and tried to maximize my data-ink ratio. I layered a colored, low-opacity rectangle onto the graphic over the years which are commonly referenced as the Steroid Era. This was more efficient than creating a completely separate graphic, and it also allows the viewer to understand the purpose quicker.
+
+One option I considered when making this graphic was to use faceting. Below I have shown an example of what such a graphic would have looked like. The problem I saw here was that the y-axis scale shouldn't be identical for all of the faceted variables. OBP doesn't have the same range as HR per game. Also, it becomes harder to see and focus on each indivudal graph since they're smaller. Overall, I think the drop down menu option was much better.
 
 ## With y-axes that start at 0...
 
@@ -101,5 +107,32 @@ chart = (steroid_era + filter_stats).properties(
 )
 
 chart
+```
+
+## Faceted...
+
+```{python}
+stat_types = ['Home runs per game', 'Runs per game', 'Batting average', 'SLG', 'OPS']
+
+filtered_data = mlb_data[mlb_data['stat_type'].isin(stat_types)]
+
+facet_base = alt.Chart(filtered_data).mark_line().encode(
+    x='Year:T',
+    y='value:Q'
+).transform_filter(
+    alt.FieldOneOfPredicate(field='stat_type', oneOf=stat_types)
+)
+
+steroid_era_facet = alt.Chart(filtered_data).mark_rect().encode(
+    x='x_start:T',
+    x2='x_end:T',
+    opacity=alt.value(0.005)
+).transform_calculate(
+    x_start='datetime(1990, 1, 1)',
+    x_end='datetime(2000, 1, 1)'
+)
+
+alt.layer(facet_base, steroid_era_facet).facet('stat_type:N', columns = 2)
+
 ```
 

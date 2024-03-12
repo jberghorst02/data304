@@ -7,6 +7,7 @@ author: "Jared Berghorst"
 ---
 
 # Challenge 4: Price at the pump
+
 ## Making a graph to compare countries
 
 ```{python}
@@ -26,7 +27,6 @@ gas_prices_melted['gas_price'] = pd.to_numeric(gas_prices_melted['gas_price'], e
 gas_prices_melted['gas_price'] = gas_prices_melted.groupby('country')['gas_price'].transform(lambda x: x.interpolate())
 
 ```
-
 
 ```{python}
 from altair import datum
@@ -66,8 +66,8 @@ alt.Chart(avg_regional_gas_price).mark_line().encode(
   y = 'gas_price:Q',
   color = 'region:N'
 ).properties(title = 'Europe pays the most for gas, Asia pays the least. All regions have seen declining prices since 2012.').configure_axisX(
-    labelAngle=45 
+    labelAngle=45
 )
 ```
 
-This graphic shows the average gas price in each world region over time. The prices overall follow a very similar trend to the previous graphic. Europe pays the most per gallon, while Asia pays the least, likely due to the close access of Middle Eastern oil reserves to the rest of Asia. I joined the two datasets in order to get the regional data, then I aggregated by region and took the mean gas price. 
+This graphic shows the average gas price in each world region over time. The prices overall follow a very similar trend to the previous graphic. Europe pays the most per gallon, while Asia pays the least, likely due to the close access of Middle Eastern oil reserves to the rest of Asia. I joined the two datasets in order to get the regional data, then I aggregated by region and took the mean gas price.
